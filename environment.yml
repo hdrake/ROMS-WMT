@@ -1,0 +1,17 @@
+name: ROMS-WMT
+channels:
+  - conda-forge
+dependencies:
+  - python==3.11
+  - netcdf4
+  - zarr
+  - xarray
+  - cftime
+  - scipy
+  - dask
+  - jupyterlab
+  - matplotlib
+  - pip
+  - pip:
+    - roms-tools
+    - xwmb>=0.5.1

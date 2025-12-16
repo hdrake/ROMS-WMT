@@ -1,0 +1,197 @@
+---
+# Assumptions: tendencies are already volume-integrated over each cell, regardless of what metadata say.
+# Therefore: DO NOT multiply by area or thickness.
+# Constants:
+#   rho0 = 1035.           # kg m^-3
+#   cp   = 3992.           # J kg^-1 K^-1
+# Salt unit_conversion = 0.001  # psu -> kg/kg
+
+mass:
+  lambda: "density"
+  thickness: "thkcello"          # optional/for diagnostics; not used below
+  lhs:
+    var: null
+    sum:
+      var: null
+      Eulerian_tendency:
+        var: null
+  rhs:
+    var: null
+    sum:
+      var: null
+      advection:
+        var: null
+        sum:
+          var: null
+          lateral:
+            var: null
+            sum:
+              var: null
+              zonal_convergence:
+                var: null
+                product:
+                  var: null
+                  zonal_divergence:
+                    var: null
+                    difference:
+                      var: null
+                      zonal_mass_transport: "umo"
+                  sign: -1
+              meridional_convergence:
+                var: null
+                product:
+                  var: null
+                  meridional_divergence:
+                    var: null
+                    difference:
+                      var: null
+                      meridional_mass_transport: "vmo"
+                  sign: -1
+          interfacial:
+            var: null
+      surface_exchange_flux:
+        var: null
+
+heat:  # heat budget in J/s
+  lambda: "temp"
+  lhs:
+    var: null
+    sum:
+      var: null
+      Eulerian_tendency:
+        var: null
+        product:
+          var: null
+          specific_heat_capacity: 3992.
+          density: 1035.
+          tracer_content_tendency_volume_integrated: "temp_rate"   # K·m^3 s^-1
+      advection:
+        var: null
+        sum:
+          var: null
+          lateral:
+            var: null
+            sum:
+              var: null
+              xi:
+                var: null
+                product:
+                  var: null
+                  specific_heat_capacity: 3992.
+                  density: 1035.
+                  tracer_content_tendency_volume_integrated: "temp_xadv"
+              eta:
+                var: null
+                product:
+                  var: null
+                  specific_heat_capacity: 3992.
+                  density: 1035.
+                  tracer_content_tendency_volume_integrated: "temp_yadv"
+          interfacial:
+            var: null
+            product:
+              var: null
+              specific_heat_capacity: 3992.
+              density: 1035.
+              tracer_content_tendency_volume_integrated: "temp_vadv"
+  rhs:
+    var: null
+    sum:
+      var: null
+      diffusion:
+        var: null
+        sum:
+          var: null
+          lateral:
+            var: null
+            product:
+              var: null
+              specific_heat_capacity: 3992.
+              density: 1035.
+              tracer_content_tendency_volume_integrated: "temp_hmix"
+          interfacial:
+            var: null
+            product:
+              var: null
+              specific_heat_capacity: 3992.
+              density: 1035.
+              tracer_content_tendency_volume_integrated: "temp_vmix"
+      surface_exchange_flux:
+        var: null
+        product:
+          var: null
+          specific_heat_capacity: 3992.
+          density: 1035.
+          tracer_content_tendency_volume_integrated: "temp_forc"
+
+salt:  # salt budget in kg/s
+  lambda: "salt"
+  lhs:
+    var: null
+    sum:
+      var: null
+      Eulerian_tendency:
+        var: null
+        product:
+          var: null
+          unit_conversion: 0.001
+          density: 1035.
+          tracer_content_tendency_volume_integrated: "salt_rate"   # psu·m^3 s^-1
+      advection:
+        var: null
+        sum:
+          var: null
+          lateral:
+            var: null
+            sum:
+              var: null
+              xi:
+                var: null
+                product:
+                  var: null
+                  unit_conversion: 0.001
+                  density: 1035.
+                  tracer_content_tendency_volume_integrated: "salt_xadv"
+              eta:
+                var: null
+                product:
+                  var: null
+                  unit_conversion: 0.001
+                  density: 1035.
+                  tracer_content_tendency_volume_integrated: "salt_yadv"
+          interfacial:
+            var: null
+            product:
+              var: null
+              unit_conversion: 0.001
+              density: 1035.
+              tracer_content_tendency_volume_integrated: "salt_vadv"
+  rhs:
+    var: null
+    sum:
+      var: null
+      diffusion:
+        var: null
+        sum:
+          var: null
+          lateral:
+            var: null
+            product:
+              var: null
+              unit_conversion: 0.001
+              density: 1035.
+              tracer_content_tendency_volume_integrated: "salt_hmix"
+          interfacial:
+            var: null
+            product:
+              var: null
+              unit_conversion: 0.001
+              density: 1035.
+              tracer_content_tendency_volume_integrated: "salt_vmix"
+      surface_exchange_flux:
+        var: null
+        product:
+          var: null
+          unit_conversion: 0.001
+          density: 1035.
+          tracer_content_tendency_volume_integrated: "salt_forc"
